@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Facades\Hash;
 use Validator;
+// use Hash;
 class AdminController extends Controller
 {
     public function dashboard(){
@@ -46,5 +48,13 @@ class AdminController extends Controller
 
     public function updatePassword(){
         return view('admin.update_password');
+    }
+    public function checkCurrentPassword(Request $request){
+        $data = $request->all();
+        if(Hash::check($data['current_password'],Auth::guard('admin')->user()->password)){
+            return "true";
+        }else{
+            return "false";
+        }
     }
 }
