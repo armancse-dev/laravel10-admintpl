@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
 use Validator;
 // use Hash;
@@ -46,7 +47,24 @@ class AdminController extends Controller
         return redirect('admin/login');
     }
 
-    public function updatePassword(){
+    public function updatePassword(Request $request){
+        if($request->isMethod('post')){
+            $data = $request->all();
+            // check if current password is current
+            if(Hash::check($data['current_password'],Auth::guard('admin')->user()->password)){
+                //check if new password and confirm password are matching
+                if($data['new_password']==$data['confirm_password']){
+                    //update new password
+                    Admin::where('id',Auth::guard('admin')->user()->id)->update(['password'=>bcrypt($data['new_password'])]);
+
+                    return redirect()->back()->with('sucess_message','Password has been updated successfully');
+                }else{
+                    return redirect()->back()->with('error_message','New Password & Confirm password is not matching');
+                }
+            }else{
+                return redirect()->back()->with('error_message','Your current password is incorrectt');
+            }
+        }
         return view('admin.update_password');
     }
     public function checkCurrentPassword(Request $request){
