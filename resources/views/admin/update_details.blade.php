@@ -59,11 +59,11 @@
                   
                   <div class="form-group">
                     <label for="admin_name">Name</label>
-                    <input type="text" class="form-control" id="admin_name" name="admin_name" placeholder="Admin Name"><span id="verifyCurrentPwd"></span>
+                    <input type="text" class="form-control" id="admin_name" name="admin_name" placeholder="Admin Name" value="{{ Auth::guard('admin')->user()->name }}">
                   </div>
                   <div class="form-group">
-                    <label for="mobile">Mobile</label>
-                    <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Mobile">
+                    <label for="admin_mobile">Mobile</label>
+                    <input type="text" class="form-control" id="admin_mobile" name="admin_mobile" placeholder="Admin Mobile" value="{{ Auth::guard('admin')->user()->mobile }}">
                   </div>
                 </div>
                 <!-- /.card-body -->
